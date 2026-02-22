@@ -22,7 +22,7 @@
 <div class="mb-3">
     <label for="maxIntervalInput" class="form-label">Maximum Interval (hours, optional)</label>
     <input type="number" class="form-control" id="maxIntervalInput" @bind="maxIntervalHours" min="0" step="0.01" />
-    <div class="form-text">For CRON: checks max time between executions. For rate: checks if rate interval <= this.</div>
+    <div class="form-text">For CRON: checks max time between executions. For rate: checks if rate interval &lt;= this.</div>
 </div>
 
 <button class="btn btn-primary" @onclick="ValidateExpression">Validate</button>
