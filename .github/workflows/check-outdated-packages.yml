@@ -1,0 +1,22 @@
+name: Outdated package checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main ]
+
+env:
+  SOLUTION_PATH: 'src/AwsCronValidator.sln'
+
+jobs:
+  outdated-packages-check:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - uses: trossr32/outdated-packages-action@v3.0.0
+        with:
+          use-dotnet-outdated: true
+          dotnet-solution-or-project-path: ${{ env.SOLUTION_PATH }}
+          dotnet-version: '10.*.*'
