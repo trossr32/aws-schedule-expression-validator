@@ -19,10 +19,10 @@ jobs:
         dotnet-version: 10.x
 
     - name: Restore dependencies
-      run: dotnet restore src/AwsCronValidator.sln
+      run: dotnet restore src/AwsScheduleExpressionValidator.sln
 
     - name: Build
-      run: dotnet build src/AwsCronValidator.sln --configuration Release --no-restore
+      run: dotnet build src/AwsScheduleExpressionValidator.sln --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test src/AwsCronValidator.sln --configuration Release --no-build --verbosity normal
+      run: dotnet test src/AwsScheduleExpressionValidator.sln --configuration Release --no-build --verbosity normal

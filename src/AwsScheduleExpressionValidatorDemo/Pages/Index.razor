@@ -1,0 +1,252 @@
+﻿@page "/"
+@layout MainLayout
+
+<PageTitle>AWS Schedule Validator</PageTitle>
+
+<div id="main" class="relative">
+    <div class="min-h-screen">
+
+        <section class="bg-grey-60 text-secondary dark:bg-dark-grey dark:text-grey-60">
+            <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+                <div class="rounded-3xl border border-grey-70 bg-white p-8 shadow-default dark:border-grey-20 dark:bg-secondary sm:p-10">
+                    <div class="space-y-3">
+                        <h1 class="text-3xl font-semibold text-secondary dark:text-white">AWS EventBridge Schedule Validator</h1>
+                        <p class="text-base text-grey-20 dark:text-grey-60">
+                            Check  <a class="inline-flex items-center gap-1 text-primary" href="https://docs.aws.amazon.com/scheduler/latest/UserGuide/schedule-types.html#cron-based" target="_blank" rel="noopener noreferrer">CRON <i class="bx bx-link-external relative -top-1 text-[0.5em]"></i></a>, <a class="inline-flex items-center gap-1 text-primary" href="https://docs.aws.amazon.com/scheduler/latest/UserGuide/schedule-types.html#rate-based" target="_blank" rel="noopener noreferrer">rate <i class="bx bx-link-external relative -top-1 text-[0.5em]"></i></a>, or <a class="inline-flex items-center gap-1 text-primary" href="https://docs.aws.amazon.com/scheduler/latest/UserGuide/schedule-types.html#one-time" target="_blank" rel="noopener noreferrer">at <i class="bx bx-link-external relative -top-1 text-[0.5em]"></i></a> expressions instantly and verify optional interval rules.
+                        </p>
+                    </div>
+
+                    <div class="mt-8 space-y-6">
+                        <div class="space-y-2">
+                            <label for="expressionInput" class="text-sm font-medium text-grey-10 dark:text-grey-60">Schedule expression</label>
+                            <input type="text" class="w-full rounded-xl border border-grey-70 bg-white px-4 py-3 text-secondary shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-grey-20 dark:bg-dark-grey dark:text-grey-60" id="expressionInput" @bind="_scheduleExpression" placeholder="cron(0 10 * * ? *), rate(5 minutes), at(2024-01-01T12:00:00)" />
+                            <p class="text-xs text-grey-20 dark:text-grey-40">Supports prefixed or bare CRON expressions.</p>
+                        </div>
+
+                        <div class="grid gap-6 md:grid-cols-2">
+                            <div class="space-y-2">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <label for="minIntervalInput" class="text-sm font-medium text-grey-10 dark:text-grey-60">Minimum interval</label>
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <button type="button" class="@GetPillClass(_minIntervalUnit, IntervalUnitSeconds)" @onclick="() => SetMinIntervalUnit(IntervalUnitSeconds)">Seconds</button>
+                                        <button type="button" class="@GetPillClass(_minIntervalUnit, IntervalUnitMinutes)" @onclick="() => SetMinIntervalUnit(IntervalUnitMinutes)">Minutes</button>
+                                        <button type="button" class="@GetPillClass(_minIntervalUnit, IntervalUnitHours)" @onclick="() => SetMinIntervalUnit(IntervalUnitHours)">Hours</button>
+                                    </div>
+                                </div>
+                                <input type="number" class="w-full rounded-xl border border-grey-70 bg-white px-4 py-3 text-secondary shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-grey-20 dark:bg-dark-grey dark:text-grey-60" id="minIntervalInput" @bind="_minInterval" min="0" step="0.01" placeholder="Optional" />
+                                <p class="text-xs text-grey-20 dark:text-grey-40">Ensures spacing between runs meets a minimum.</p>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <label for="maxIntervalInput" class="text-sm font-medium text-grey-10 dark:text-grey-60">Maximum interval</label>
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <button type="button" class="@GetPillClass(_maxIntervalUnit, IntervalUnitSeconds)" @onclick="() => SetMaxIntervalUnit(IntervalUnitSeconds)">Seconds</button>
+                                        <button type="button" class="@GetPillClass(_maxIntervalUnit, IntervalUnitMinutes)" @onclick="() => SetMaxIntervalUnit(IntervalUnitMinutes)">Minutes</button>
+                                        <button type="button" class="@GetPillClass(_maxIntervalUnit, IntervalUnitHours)" @onclick="() => SetMaxIntervalUnit(IntervalUnitHours)">Hours</button>
+                                    </div>
+                                </div>
+                                <input type="number" class="w-full rounded-xl border border-grey-70 bg-white px-4 py-3 text-secondary shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-grey-20 dark:bg-dark-grey dark:text-grey-60" id="maxIntervalInput" @bind="_maxInterval" min="0" step="0.01" placeholder="Optional" />
+                                <p class="text-xs text-grey-20 dark:text-grey-40">Perfect for catching overly infrequent schedules.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-4">
+                            <button class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:brightness-110" @onclick="ValidateExpression">Validate schedule</button>
+                            <span class="text-xs text-grey-20 dark:text-grey-40">Tip: Add a prefix like <span class="font-semibold text-secondary dark:text-grey-60">cron(...)</span> or paste raw CRON fields.</span>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(_result))
+                    {
+                        <div class="mt-6 rounded-2xl border px-4 py-3 text-sm @_alertClass">
+                            <span class="font-semibold">@_result</span>
+                        </div>
+                    }
+
+                    @if (_canShowNextExecutions && _nextExecutionSummaries.Count > 0)
+                    {
+                        <div class="mt-4 rounded-2xl border border-grey-70 bg-grey-90/40 px-4 py-3 text-sm text-secondary dark:border-grey-20 dark:bg-dark-grey">
+                            <p class="font-semibold text-grey-10 dark:text-grey-60">Next executions</p>
+                            <ul class="mt-2 list-disc space-y-1 pl-5 text-grey-20 dark:text-grey-40">
+                                @foreach (var execution in _nextExecutionSummaries)
+                                {
+                                    <li>@execution</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        <Footer></Footer>
+    </div>
+</div>
+
+@code {
+    private const string IntervalUnitSeconds = "seconds";
+    private const string IntervalUnitMinutes = "minutes";
+    private const string IntervalUnitHours = "hours";
+    private string _scheduleExpression = "";
+    private double? _minInterval;
+    private double? _maxInterval;
+    private string _minIntervalUnit = IntervalUnitSeconds;
+    private string _maxIntervalUnit = IntervalUnitSeconds;
+    private string _result = "";
+    private string _alertClass = "";
+    private bool _canShowNextExecutions;
+    private IReadOnlyList<DateTimeOffset> _nextExecutions = [];
+    private IReadOnlyList<string> _nextExecutionSummaries = [];
+
+    private void ValidateExpression()
+    {
+        if (string.IsNullOrWhiteSpace(_scheduleExpression))
+        {
+            _result = "Please enter a schedule expression.";
+            _alertClass = "border-error/40 bg-error/10 text-error";
+            _canShowNextExecutions = false;
+            _nextExecutions = [];
+            _nextExecutionSummaries = [];
+            return;
+        }
+
+        try
+        {
+            var minInterval = this._minInterval is > 0 ? CreateInterval(this._minInterval.Value, _minIntervalUnit) : (TimeSpan?)null;
+            var maxInterval = this._maxInterval is > 0 ? CreateInterval(this._maxInterval.Value, _maxIntervalUnit) : (TimeSpan?)null;
+
+            var formatValid = AwsScheduleExpressionValidator.ValidateFormat(_scheduleExpression);
+            var isValid = AwsScheduleExpressionValidator.ValidateWithIntervals(_scheduleExpression, minInterval, maxInterval);
+            _canShowNextExecutions = formatValid;
+            _nextExecutions = formatValid ? AwsScheduleExpressionValidator.GetNextOccurrences(_scheduleExpression, 5) : [];
+            _nextExecutionSummaries = BuildExecutionSummaries(_nextExecutions);
+
+            _result = isValid
+                ? $"Valid schedule expression.{GetValidationConstraints(minInterval, maxInterval, " Respects interval constraints ({0}).")}" 
+                : formatValid
+                    ? $"Valid schedule expression but violates interval constraints ({GetValidationConstraints(minInterval, maxInterval, "{0}")})."
+                    : $"Invalid schedule expression{GetValidationConstraints(minInterval, maxInterval, " and violates interval constraints ({0})")}.";
+
+            _alertClass = isValid
+                ? "border-light-green/40 bg-light-green/10 text-dark-green dark:text-light-green"
+                : "border-error/40 bg-error/10 text-error";
+        }
+        catch (Exception ex)
+        {
+            _result = $"Error: {ex.Message}";
+            _alertClass = "border-error/40 bg-error/10 text-error";
+            _canShowNextExecutions = false;
+            _nextExecutions = [];
+            _nextExecutionSummaries = [];
+        }
+    }
+
+    private void SetMinIntervalUnit(string unit) => _minIntervalUnit = unit;
+
+    private void SetMaxIntervalUnit(string unit) => _maxIntervalUnit = unit;
+
+    private string GetValidationConstraints(TimeSpan? minInterval, TimeSpan? maxInterval, string formatString)
+    {
+        if (!minInterval.HasValue && !maxInterval.HasValue) 
+            return string.Empty;
+
+        var constraints = new List<string>();
+
+        if (minInterval.HasValue)
+            constraints.Add($"min {FormatIntervalLabel(this._minInterval, _minIntervalUnit)}");
+
+        if (maxInterval.HasValue)
+            constraints.Add($"max {FormatIntervalLabel(this._maxInterval, _maxIntervalUnit)}");
+
+        return string.Format(formatString, string.Join(", ", constraints));
+    }
+
+    private static string FormatExecutionTime(DateTimeOffset value) => value.ToLocalTime().ToString("f");
+
+    private static IReadOnlyList<string> BuildExecutionSummaries(IReadOnlyList<DateTimeOffset> executions)
+    {
+        if (executions.Count == 0)
+            return Array.Empty<string>();
+
+        var summaries = new List<string>(executions.Count);
+        var now = DateTimeOffset.Now;
+
+        for (var i = 0; i < executions.Count; i++)
+        {
+            var execution = executions[i];
+            var interval = i == 0 ? execution - now : execution - executions[i - 1];
+            var intervalLabel = interval > TimeSpan.Zero ? FormatInterval(interval) : string.Empty;
+            var suffix = string.IsNullOrEmpty(intervalLabel)
+                ? string.Empty
+                : i == 0
+                    ? $" (in {intervalLabel})"
+                    : $" (interval {intervalLabel})";
+
+            summaries.Add($"{FormatExecutionTime(execution)}{suffix}");
+        }
+
+        return summaries;
+    }
+
+    private static string FormatInterval(TimeSpan interval)
+    {
+        var duration = interval.Duration();
+        var totalSeconds = duration.TotalSeconds;
+        var totalMinutes = duration.TotalMinutes;
+        var totalHours = duration.TotalHours;
+        var totalDays = duration.TotalDays;
+
+        if (totalDays >= 365)
+            return FormatIntervalValue(totalDays / 365, "year");
+
+        if (totalDays >= 30)
+            return FormatIntervalValue(totalDays / 30, "month");
+
+        if (totalDays >= 1)
+            return FormatIntervalValue(totalDays, "day");
+
+        if (totalHours >= 1)
+            return FormatIntervalValue(totalHours, "hour");
+
+        if (totalMinutes >= 1)
+            return FormatIntervalValue(totalMinutes, "minute");
+
+        return FormatIntervalValue(totalSeconds, "second");
+    }
+
+    private static string FormatIntervalValue(double value, string unit)
+    {
+        var rounded = Math.Round(value, 1);
+        var formatted = Math.Abs(rounded % 1) < 0.05 ? ((int)Math.Round(rounded)).ToString() : rounded.ToString("0.#");
+        var suffix = rounded == 1 ? unit : $"{unit}s";
+
+        return $"{formatted} {suffix}";
+    }
+
+    private static TimeSpan CreateInterval(double value, string unit) => unit switch
+    {
+        IntervalUnitSeconds => TimeSpan.FromSeconds(value),
+        IntervalUnitMinutes => TimeSpan.FromMinutes(value),
+        IntervalUnitHours or _ => TimeSpan.FromHours(value)
+    };
+
+    private static string FormatIntervalLabel(double? value, string unit)
+    {
+        if (!value.HasValue)
+            return string.Empty;
+
+        var suffix = unit switch
+        {
+            IntervalUnitSeconds => "s",
+            IntervalUnitMinutes => "m",
+            IntervalUnitHours => "h",
+            _ => "h"
+        };
+
+        return $"{value}{suffix}";
+    }
+
+    private static string GetPillClass(string selectedUnit, string unit) => selectedUnit.Equals(unit, StringComparison.OrdinalIgnoreCase)
+        ? "cursor-pointer rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white"
+        : "cursor-pointer rounded-full border border-grey-70 px-3 py-1 text-xs font-semibold text-grey-10 dark:border-grey-20 dark:text-grey-60";
+}

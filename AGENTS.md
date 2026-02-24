@@ -4,10 +4,10 @@ This file provides guidelines and commands for agents working on the aws-cron-ai
 
 ## Project Overview
 
-- **Solution**: AwsCronValidator.sln
-- **NuGet Package**: AwsCronValidator (class library for AWS EventBridge schedule expression validation: CRON, rate, at)
-- **Demo App**: AwsCronValidatorDemo (Blazor WebAssembly for web-based validation)
-- **Tests**: AwsCronValidator.Tests (xUnit tests)
+- **Solution**: AwsScheduleExpressionValidator.sln
+- **NuGet Package**: AwsScheduleExpressionValidator (class library for AWS EventBridge schedule expression validation: CRON, rate, at)
+- **Demo App**: AwsScheduleExpressionValidatorDemo (Blazor WebAssembly for web-based validation)
+- **Tests**: AwsScheduleExpressionValidator.Tests (xUnit tests)
 - **Target Framework**: .NET 8.0
 - **Deployment**: GitHub Pages for demo app
 
@@ -16,12 +16,12 @@ This file provides guidelines and commands for agents working on the aws-cron-ai
 ### Build
 - Build entire solution: `dotnet build`
 - Build specific project: `dotnet build <project>.csproj`
-- Publish NuGet package: `dotnet pack AwsCronValidator/AwsCronValidator.csproj -c Release`
+- Publish NuGet package: `dotnet pack AwsScheduleExpressionValidator/AwsScheduleExpressionValidator.csproj -c Release`
 
 ### Test
 - Run all tests: `dotnet test`
 - Run single test: `dotnet test --filter "FullyQualifiedName~TestName"`
-  Example: `dotnet test --filter "FullyQualifiedName~AwsCronValidatorTests.ValidateFormat_ValidCrons_ReturnsTrue"`
+  Example: `dotnet test --filter "FullyQualifiedName~AwsScheduleExpressionValidatorTests.ValidateFormat_ValidCrons_ReturnsTrue"`
 - Run tests with coverage: Install coverlet and run `dotnet test /p:CollectCoverage=true`
 
 ### Lint
@@ -32,8 +32,8 @@ This file provides guidelines and commands for agents working on the aws-cron-ai
 ### Other Commands
 - Restore packages: `dotnet restore`
 - Clean: `dotnet clean`
-- Run Blazor demo locally: `dotnet run --project AwsCronValidatorDemo`
-- Publish Blazor for GitHub Pages: `dotnet publish AwsCronValidatorDemo -c Release -o publish`
+- Run Blazor demo locally: `dotnet run --project AwsScheduleExpressionValidatorDemo`
+- Publish Blazor for GitHub Pages: `dotnet publish AwsScheduleExpressionValidatorDemo -c Release -o publish`
 
 ## Code Style Guidelines
 
@@ -53,7 +53,7 @@ This file provides guidelines and commands for agents working on the aws-cron-ai
 - Nullable reference types enabled: Use `?` for nullable refs, `!` for null-forgiving.
 
 ### Naming Conventions
-- Classes: PascalCase (e.g., `AwsCronValidator`)
+- Classes: PascalCase (e.g., `AwsScheduleExpressionValidator`)
 - Methods/Properties: PascalCase (e.g., `ValidateFormat`)
 - Fields: camelCase with underscore prefix (e.g., `_minInterval`)
 - Constants: UPPER_SNAKE_CASE
