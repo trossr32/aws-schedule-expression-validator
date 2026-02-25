@@ -33,8 +33,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     uses: ./.github/workflows/publish-github.yml
 
   publish-nuget:
