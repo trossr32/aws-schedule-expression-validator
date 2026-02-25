@@ -16,7 +16,7 @@ env:
   PROJECT_PATH: 'src/AwsScheduleExpressionValidatorDemo/AwsScheduleExpressionValidatorDemo.csproj'
 
 jobs:
-  build-and-deploy:
+  deploy-pages:
     runs-on: ubuntu-latest
 
     steps:

@@ -1,18 +1,24 @@
-﻿<footer class="bg-light-green absolute bottom-0 w-full z-[-1]">
+﻿<footer class="bg-light-green w-full">
     <div class="container flex flex-col justify-between py-3 sm:flex-row">
         <p class="text-center font-header text-white md:text-left">
-            Rob Green Engineering Ltd &bull; 2022 - @DateTime.Now.Year
+            <a href="https://robgreen.me" class="underline cursor-pointer hover:text-black" target="_blank">Rob Green Engineering Ltd</a> &bull; 2022 - @DateTime.Now.Year
         </p>
         <div class="flex items-center justify-center pt-5 sm:justify-start sm:pt-0">
-            <a href="https://github.com/trossr32/aws-schedule-expression-validator" target="_blank" title="Rob Green GithubRepo">
+            <a href="https://github.com/trossr32/aws-schedule-expression-validator" class="cursor-pointer" target="_blank" title="Github repository (aws-schedule-expression-validator)">
                 <i class="bx bxl-github text-2xl hover:text-black"></i>
             </a>
-            <a href="https://www.linkedin.com/company/rob-green-engineering-ltd/" class="pl-4" title="Rob Green Engineering Ltd on linkedin">
+            <a href="https://www.nuget.org/packages/AwsScheduleExpressionValidator" class="pl-4 cursor-pointer" target="_blank" title="AwsScheduleExpressionValidator on NuGet">
+                <i class="bx bx-package text-2xl hover:text-black"></i>
+            </a>
+            <a href="https://github.com/trossr32?tab=packages" class="pl-4 cursor-pointer" target="_blank" title="AwsScheduleExpressionValidator on GitHub Packages">
+                <i class="bx bx-box text-2xl hover:text-black"></i>
+            </a>
+            @* <a href="https://www.linkedin.com/company/rob-green-engineering-ltd/" class="pl-4" title="Rob Green Engineering Ltd on linkedin">
                 <i class="bx bxl-linkedin text-2xl hover:text-black"></i>
             </a>
             <a href="mailto:web.query@robgreen.me" class="pl-4" title="contact via email">
                 <i class="bx bx-mail-send text-2xl hover:text-black"></i>
-            </a>
+            </a> *@
         </div>
     </div>
 </footer>

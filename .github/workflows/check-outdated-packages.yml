@@ -4,9 +4,13 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [ main ]
+    paths:
+      - '.github/workflows/check-outdated-packages.yml'
+      - 'src/**'
 
 env:
   SOLUTION_PATH: 'src/AwsScheduleExpressionValidator.sln'
+  NPM_PROJECT_DIR: 'src/AwsScheduleExpressionValidatorDemo'
 
 jobs:
   outdated-packages-check:
@@ -20,3 +24,5 @@ jobs:
           use-dotnet-outdated: true
           dotnet-solution-or-project-path: ${{ env.SOLUTION_PATH }}
           dotnet-version: '10.*.*'
+          use-npm-outdated: true
+          npm-project-directory: ${{ env.NPM_PROJECT_DIR }}

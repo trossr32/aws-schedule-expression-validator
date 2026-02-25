@@ -3,8 +3,8 @@
 
 <PageTitle>AWS Schedule Validator</PageTitle>
 
-<div id="main" class="relative">
-    <div class="min-h-screen">
+<div id="main" class="min-h-screen flex flex-col">
+    <div class="flex-1">
 
         <section class="bg-grey-60 text-secondary dark:bg-dark-grey dark:text-grey-60">
             <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
@@ -13,6 +13,9 @@
                         <h1 class="text-3xl font-semibold text-secondary dark:text-white">AWS EventBridge Schedule Validator</h1>
                         <p class="text-base text-grey-20 dark:text-grey-60">
                             Check  <a class="inline-flex items-center gap-1 text-primary" href="https://docs.aws.amazon.com/scheduler/latest/UserGuide/schedule-types.html#cron-based" target="_blank" rel="noopener noreferrer">CRON <i class="bx bx-link-external relative -top-1 text-[0.5em]"></i></a>, <a class="inline-flex items-center gap-1 text-primary" href="https://docs.aws.amazon.com/scheduler/latest/UserGuide/schedule-types.html#rate-based" target="_blank" rel="noopener noreferrer">rate <i class="bx bx-link-external relative -top-1 text-[0.5em]"></i></a>, or <a class="inline-flex items-center gap-1 text-primary" href="https://docs.aws.amazon.com/scheduler/latest/UserGuide/schedule-types.html#one-time" target="_blank" rel="noopener noreferrer">at <i class="bx bx-link-external relative -top-1 text-[0.5em]"></i></a> expressions instantly and verify optional interval rules.
+                        </p>
+                        <p class="text-base text-grey-20 dark:text-grey-60">
+                            View the <a class="inline-flex items-center gap-1 text-primary" href="https://github.com/trossr32/aws-schedule-expression-validator" target="_blank" rel="noopener noreferrer">project repository <i class="bx bx-link-external relative -top-1 text-[0.5em]"></i></a> or install the <a class="inline-flex items-center gap-1 text-primary" href="https://www.nuget.org/packages/AwsScheduleExpressionValidator" target="_blank" rel="noopener noreferrer">NuGet package <i class="bx bx-link-external relative -top-1 text-[0.5em]"></i></a>.
                         </p>
                     </div>
 
@@ -79,8 +82,8 @@
                 </div>
             </div>
         </section>
-        <Footer></Footer>
     </div>
+    <Footer></Footer>
 </div>
 
 @code {
