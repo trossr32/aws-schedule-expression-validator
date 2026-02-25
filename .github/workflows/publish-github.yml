@@ -1,4 +1,4 @@
-name: Publish package
+name: Build and Publish GitHub package
 
 permissions:
   contents: read
@@ -7,8 +7,8 @@ permissions:
 on: 
   push:
     paths:
-      - '.github/workflows/main.yml'
-      - 'AwsScheduleExpressionValidator/**'
+      - '.github/workflows/publish-github.yml'
+      - 'src/AwsScheduleExpressionValidator/**'
   
   workflow_dispatch:
 
