@@ -5,7 +5,15 @@ permissions:
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]  
+
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '10.x.x'
+  NODE_VERSION: '20.x'
+  SOLUTION_PATH: 'src/AwsScheduleExpressionValidator.sln'
+  PROJECT_PATH: 'src/AwsScheduleExpressionValidatorDemo/AwsScheduleExpressionValidatorDemo.csproj'
 
 jobs:
   build-and-deploy:
@@ -18,13 +26,19 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 10.x
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Setup Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ env.NODE_VERSION }}
 
     - name: Publish Blazor App
-      run: dotnet publish src/AwsScheduleExpressionValidatorDemo/AwsScheduleExpressionValidatorDemo.csproj -c Release -o publish --nologo
+      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o public -p:GHPages=true -p:GHPagesBase="/"
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: publish/wwwroot
+        publish_dir: public/wwwroot
+        force_orphan: true
