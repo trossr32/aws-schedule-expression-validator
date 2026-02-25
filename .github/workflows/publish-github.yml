@@ -57,10 +57,10 @@ jobs:
           
           # build the project. no need to pack as the project is configured to create a package on build.
           dotnet build --configuration Release
+
+          [string[]] $paths = (Get-Location), "bin", "Release", "AwsScheduleExpressionValidator.$($vsn).nupkg"
           
-          $loc = Get-Location
-          
-          dotnet nuget push "$loc/bin/Release/AwsScheduleExpressionValidator.$vsn.nupkg" -k ${{ secrets.GITHUB_TOKEN }} -s "https://nuget.pkg.github.com/trossr32/index.json"
+          dotnet nuget push "$(Join-Path $paths)" -k ${{ secrets.GITHUB_TOKEN }} -s "https://nuget.pkg.github.com/trossr32/index.json"
         shell: pwsh
 
       # https://github.com/marketplace/actions/delete-package-versions 

@@ -34,3 +34,10 @@ jobs:
       contents: read
       packages: write
     uses: ./.github/workflows/publish-github.yml
+
+  publish-nuget:
+    needs: build-and-test
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/publish-package.yml
