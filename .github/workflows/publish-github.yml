@@ -3,6 +3,7 @@ name: Build and Publish GitHub package
 permissions:
   contents: read
   packages: write
+  
 
 on: 
   push:
@@ -55,10 +56,9 @@ jobs:
           
           Set-Location $projDir
           
-          # build the project. no need to pack as the project is configured to create a package on build.
-          dotnet build --configuration Release
+          dotnet pack --configuration Release --output artifacts/package/release
 
-          $nupkgPath = [IO.Path]::Combine((Get-Location), "bin", "Release", "AwsScheduleExpressionValidator.$($vsn).nupkg")
+          $nupkgPath = [IO.Path]::Combine((Get-Location), "artifacts", "package", "release", "AwsScheduleExpressionValidator.$($vsn).nupkg")
           
           dotnet nuget push "$nupkgPath" -k ${{ secrets.GITHUB_TOKEN }} -s "https://nuget.pkg.github.com/trossr32/index.json"
         shell: pwsh
