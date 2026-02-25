@@ -29,6 +29,7 @@ x86/
 [Aa][Rr][Mm]64/
 [Aa][Rr][Mm]64[Ee][Cc]/
 bld/
+[Bb]in/
 [Oo]bj/
 [Oo]ut/
 [Ll]og/
@@ -110,6 +111,7 @@ StyleCopReport.xml
 *.vssscc
 .builds
 *.pidb
+*.log
 *.svclog
 *.scc
 
@@ -212,6 +214,7 @@ PublishScripts/
 *.nupkg
 # NuGet Symbol Packages
 *.snupkg
+*.nuget
 # The packages folder can be ignored because of Package Restore
 **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.

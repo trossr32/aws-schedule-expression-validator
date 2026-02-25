@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <NpmLastInstall>node_modules/.last-install</NpmLastInstall>
+    <PublishTrimmed>false</PublishTrimmed>
+    <WasmApplicationEnvironmentName>Production</WasmApplicationEnvironmentName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="SoloX.BlazorJsBlob" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="PublishSPAforGitHubPages.Build" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AwsScheduleExpressionValidator\AwsScheduleExpressionValidator.csproj" />
+  </ItemGroup>
+  <Target Name="CheckForNpm" BeforeTargets="NpmInstall">
+    <Exec Command="npm -v" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="You must install NPM to build this project" />
+  </Target>
+  <Target Name="NpmInstall" BeforeTargets="BuildCSS" Inputs="package.json" Outputs="$(NpmLastInstall)">
+    <Exec Command="npm install" />
+    <Touch Files="$(NpmLastInstall)" AlwaysCreate="true" />
+  </Target>
+  <Target Name="BuildCSS" BeforeTargets="Compile">
+    <Exec Command="npm run build" Condition=" '$(Configuration)' == 'Debug' " />
+    <Exec Command="npm run release" Condition=" '$(Configuration)' == 'Release' " />
+  </Target>
+</Project>

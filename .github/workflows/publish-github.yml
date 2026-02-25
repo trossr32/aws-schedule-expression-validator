@@ -1,0 +1,73 @@
+name: Build and Publish GitHub package
+
+permissions:
+  contents: read
+  packages: write
+  
+
+on: 
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/publish-github.yml'
+      - 'src/AwsScheduleExpressionValidator/**'
+  
+  workflow_call:
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: Build and publish package
+        run: |
+          $projDir = "src/AwsScheduleExpressionValidator"
+          $proj = "$projDir/AwsScheduleExpressionValidator.csproj"
+          $releaseDir = "bin/Release"
+          $vsnPattern = "<Version>(?<version>\d+\.\d+\.\d+)</Version>"
+
+          $projFile = Get-Content -Path $proj
+          $result = [regex]::Matches($projFile, $vsnPattern)
+          $vsn = $result[0].Groups['version'].Value
+          
+          # if not the main branch then use a valid semver pre-release format with branch name with special chars removed, lower cased 
+          # and truncated to 10 chars, and datetime, e.g. 'refs/heads/feature/YK-1234_a-branch' becomes 1.0.0-yk1234_abr.yyyyMMddHHmmss
+          if ("${{ github.ref }}" -ne "refs/heads/main") {
+            $now = [System.DateTime]::Now.ToString("yyyyMMddHHmmss")
+
+            $parts = "${{ github.ref }}".Split('/')
+
+            $branch = ($parts[$parts.Length - 1] -replace '[^a-zA-Z0-9]', '').ToLower()
+
+            if ($branch.Length -gt 10) {
+              $branch = $branch.Substring(0, 10)
+            }
+
+            $preReleaseVsn = "$vsn-$branch.$now"
+
+            Set-Content -Path $proj -Value ($projFile -Replace $vsn, $preReleaseVsn)
+            
+            $vsn = $preReleaseVsn
+          }
+          
+          Set-Location $projDir
+          
+          dotnet pack --configuration Release --output artifacts/package/release
+
+          $nupkgPath = [IO.Path]::Combine((Get-Location), "artifacts", "package", "release", "AwsScheduleExpressionValidator.$($vsn).nupkg")
+          
+          dotnet nuget push "$nupkgPath" -k ${{ secrets.GITHUB_TOKEN }} -s "https://nuget.pkg.github.com/trossr32/index.json"
+        shell: pwsh
+
+      # https://github.com/marketplace/actions/delete-package-versions 
+      - name: Clean old packages
+        uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'AwsScheduleExpressionValidator'
+          package-type: 'nuget'
+          min-versions-to-keep: 3
+          delete-only-pre-release-versions: "true"
