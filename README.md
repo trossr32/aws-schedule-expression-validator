@@ -1,9 +1,11 @@
 # AWS Schedule Expression Validator
 
+[![NuGet](https://img.shields.io/nuget/v/AwsScheduleExpressionValidator.svg)](https://www.nuget.org/packages/AwsScheduleExpressionValidator) <br />
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-AwsScheduleExpressionValidator-1082c3)](https://github.com/trossr32?tab=packages) <br />
 [![CI](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/ci.yml)
-[![Publish Package](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/publish-package.yml/badge.svg)](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/publish-package.yml)
-[![NuGet](https://img.shields.io/nuget/v/AwsScheduleExpressionValidator.svg)](https://www.nuget.org/packages/AwsScheduleExpressionValidator)
-[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-AwsScheduleExpressionValidator-24292f)](https://github.com/trossr32?tab=packages)
+[![Publish NuGet Package](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/publish-package.yml/badge.svg)](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/publish-package.yml)
+[![Publish GitHub Package](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/publish-github.yml/badge.svg)](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/publish-github.yml)
+[![Deploy GitHub Pages](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/trossr32/aws-schedule-expression-validator/actions/workflows/deploy-pages.yml)
 
 Validate AWS EventBridge Scheduler expressions (`cron`, `rate`, and `at`) and optionally enforce minimum/maximum intervals between runs. Includes FluentValidation integrations and a Blazor WebAssembly demo.
 
@@ -164,3 +166,4 @@ dotnet run --project src/AwsScheduleExpressionValidatorDemo/AwsScheduleExpressio
 
 - For `at(...)` expressions, interval constraints are not applicable (one-time schedules).
 - When no `cron(...)` prefix is provided, the validator assumes the input is a CRON expression.
+
