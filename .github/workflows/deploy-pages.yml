@@ -34,7 +34,7 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
 
     - name: Publish Blazor App
-      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o public -p:GHPages=true -p:GHPagesBase="/"
+      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o public -p:GHPages=true -p:GHPagesBase="/aws-schedule-expression-validator/"
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
