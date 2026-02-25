@@ -1,10 +1,39 @@
 namespace AwsScheduleExpressionValidator;
 
+/// <summary>
+/// Defines the error types that can occur when validating AWS schedule expressions.
+/// </summary>
+/// <remarks>This enumeration is used to represent specific validation errors encountered during the evaluation of
+/// AWS schedule configurations. Each value corresponds to a distinct error condition that can be checked
+/// programmatically to determine the nature of a validation failure.</remarks>
 public enum AwsScheduleValidationError
 {
+    /// <summary>
+    /// Indicates that no validation errors were encountered, and the AWS schedule expression is considered valid.
+    /// </summary>
     None,
+
+    /// <summary>
+    /// Represents an error that occurs when the format of the AWS schedule expression is invalid. This error is typically
+    /// encountered when the expression does not conform to the expected syntax or structure.
+    /// </summary>
     InvalidFormat,
+
+    /// <summary>
+    /// Represents an error that occurs when an interval configuration is invalid.
+    /// </summary>
+    /// <remarks>This exception is typically thrown when the specified interval does not meet the required
+    /// constraints, such as being negative or exceeding maximum limits. Ensure that the interval values are validated
+    /// before configuration to prevent this exception.</remarks>
     InvalidIntervalConfiguration,
+
+    /// <summary>
+    /// Represents a violation of an interval constraint, indicating that a specified condition related to time
+    /// intervals has not been met.
+    /// </summary>
+    /// <remarks>This class is typically used in scenarios where constraints on time intervals are enforced,
+    /// such as scheduling or timing operations. It may contain properties that provide details about the specific
+    /// violation, including the expected and actual interval values.</remarks>
     IntervalConstraintViolation
 }
 
@@ -22,17 +51,56 @@ public enum AwsScheduleValidationError
 /// the validation outcome.</param>
 public sealed record AwsScheduleExpressionValidationResult(bool IsValid, AwsScheduleValidationError Error, string Message)
 {
+    /// <summary>
+    /// Gets a predefined validation result indicating that the AWS schedule expression is valid and contains no errors.
+    /// </summary>
+    /// <remarks>Use this property to represent a successful validation outcome when no issues are detected in
+    /// the schedule expression. This instance can be used as a standard result for valid expressions.</remarks>
     public static AwsScheduleExpressionValidationResult Success { get; } = new(true, AwsScheduleValidationError.None, string.Empty);
 }
 
+/// <summary>
+/// Represents an exception that is thrown when an AWS schedule expression fails validation.
+/// </summary>
+/// <remarks>This exception is typically thrown when a schedule expression provided to AWS services does not meet
+/// the required validation criteria. Use this exception to identify and handle invalid schedule expressions in your
+/// application logic.</remarks>
+/// <param name="message">The error message that describes the reason for the validation failure.</param>
 public class AwsScheduleValidationException(string message) : Exception(message);
 
+/// <summary>
+/// Represents an error that occurs when the format of an AWS schedule expression is invalid.
+/// </summary>
+/// <remarks>This exception is thrown when the provided schedule expression does not conform to the expected
+/// format for AWS scheduling.</remarks>
+/// <param name="message">The error message that describes the reason for the exception.</param>
 public sealed class AwsScheduleExpressionFormatException(string message) : AwsScheduleValidationException(message);
 
+/// <summary>
+/// Represents an exception that is thrown when a configuration error occurs related to the AWS schedule interval.
+/// </summary>
+/// <param name="message">The error message that describes the reason for the exception.</param>
 public sealed class AwsScheduleIntervalConfigurationException(string message) : AwsScheduleValidationException(message);
 
+/// <summary>
+/// Represents an exception that is thrown when a schedule interval violation occurs in AWS schedule validation.
+/// </summary>
+/// <remarks>This exception is a specific type of AwsScheduleValidationException, indicating that the provided
+/// schedule does not adhere to the expected interval constraints.</remarks>
+/// <param name="message">The error message that describes the reason for the exception.</param>
 public sealed class AwsScheduleIntervalViolationException(string message) : AwsScheduleValidationException(message);
 
+/// <summary>
+/// Provides configuration and validation for AWS schedule expressions, including interval constraints, occurrence
+/// count, and start time. Enables fluent setup of validation parameters and supports exception handling for validation
+/// failures.
+/// </summary>
+/// <remarks>Use this class to configure validation rules for AWS schedule expressions, such as minimum and
+/// maximum intervals between scheduled events, the number of occurrences to validate, and the start time for
+/// scheduling. The class offers methods for fluent configuration and allows callers to choose whether validation
+/// failures should throw exceptions or return detailed error results. Validation methods ensure that only schedule
+/// expressions meeting the specified constraints are considered valid. For a simple validity check, use the IsValid
+/// method; for detailed validation results, use Evaluate.</remarks>
 public sealed class AwsScheduleExpressionValidation
 {
     private readonly string _expression;
@@ -150,6 +218,13 @@ public sealed class AwsScheduleExpressionValidation
         return HandleFailure(AwsScheduleValidationError.IntervalConstraintViolation, new AwsScheduleIntervalViolationException(constraintMessage));
     }
 
+    /// <summary>
+    /// Gets the next scheduled occurrences based on the current schedule expression, occurrence count, and start time.
+    /// </summary>
+    /// <remarks>The method validates the schedule expression format and occurrence count before retrieving
+    /// occurrences. If validation fails, the method returns an empty list and handles the failure internally.</remarks>
+    /// <returns>A read-only list of <see cref="DateTimeOffset"/> values representing the next scheduled occurrences. The list is
+    /// empty if the schedule expression format is invalid or the occurrence count is less than or equal to zero.</returns>
     public IReadOnlyList<DateTimeOffset> GetNextScheduleExpressionOccurrences()
     {
         if (!AwsScheduleExpressionValidator.ValidateFormat(_expression))
@@ -189,6 +264,11 @@ public sealed class AwsScheduleExpressionValidation
     }
 }
 
+/// <summary>
+/// Provides extension methods for validating AWS schedule expressions.
+/// </summary>
+/// <remarks>This class contains methods that enable a fluent interface for validating AWS schedule
+/// expressions.</remarks>
 public static class AwsScheduleExpressionValidationExtensions
 {
     /// <summary>
