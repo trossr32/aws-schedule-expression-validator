@@ -6,10 +6,13 @@ permissions:
 
 on: 
   push:
+    branches: [ main ]
     paths:
       - '.github/workflows/publish-github.yml'
       - 'src/AwsScheduleExpressionValidator/**'
   
+  workflow_call:
+
   workflow_dispatch:
 
 jobs:
@@ -21,7 +24,7 @@ jobs:
       
       - name: Build and publish package
         run: |
-          $projDir = "src\AwsScheduleExpressionValidator"
+          $projDir = "src/AwsScheduleExpressionValidator"
           $proj = "$projDir/AwsScheduleExpressionValidator.csproj"
           $releaseDir = "bin/Release"
           $vsnPattern = "<Version>(?<version>\d+\.\d+\.\d+)</Version>"
