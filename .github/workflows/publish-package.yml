@@ -30,7 +30,7 @@ jobs:
         uses: NuGet/login@v1
         id: login
         with:
-          user: trossr32 #${{ secrets.NUGET_USER }}
+          user: ${{ secrets.NUGET_USER }}
 
       - name: push to NuGet
         # Only push to NuGet if we're building a tag
