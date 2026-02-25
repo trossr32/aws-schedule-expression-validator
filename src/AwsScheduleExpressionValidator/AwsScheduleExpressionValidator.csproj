@@ -56,17 +56,14 @@
 	<PropertyGroup>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageIcon>nuget_128.png</PackageIcon>
+		<PackageIcon>Assets/nuget_128.png</PackageIcon>
 		<Title>AWS Schedule Expression Validator</Title>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Update="Assets\nuget_128.png" Link="nuget_128.png">
+	  <None Update="Assets\nuget_128.png">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
-	  </None>
-	  <None Update="nuget_128.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 
