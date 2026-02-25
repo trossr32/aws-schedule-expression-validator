@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<PackageId>AwsScheduleExpressionValidator</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.1.0</Version>
 		<Authors>Rob Green Engineering Ltd</Authors>
 		<Description>A library for validating AWS EventBridge Scheduler CRON expressions with optional minimum timespan checks, fluent API and FluentValidation integration</Description>
 		<PackageTags>cron;aws;eventbridge;scheduler;validation</PackageTags>
