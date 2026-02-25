@@ -40,6 +40,4 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    secrets:
-      NUGET_USER: ${{ secrets.NUGET_USER }}
     uses: ./.github/workflows/publish-package.yml
