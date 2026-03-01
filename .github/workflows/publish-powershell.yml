@@ -30,6 +30,23 @@ jobs:
         run: cp AwsScheduleExpressionValidator.PsModule.dll-Help.xml bin/Release/net8.0/
         working-directory: src/AwsScheduleExpressionValidator.PsModule
 
+      - name: Initialize PSResourceGet repository store
+        shell: pwsh
+        run: |
+          $repoStorePath = Join-Path $HOME ".local/share/PSResourceGet/PSResourceRepository.xml"
+          $repoStoreDirectory = Split-Path $repoStorePath -Parent
+
+          New-Item -ItemType Directory -Path $repoStoreDirectory -Force | Out-Null
+
+          if (-not (Test-Path $repoStorePath)) {
+            @() | Export-Clixml -Path $repoStorePath
+          }
+
+          $galleryRepository = Get-PSResourceRepository -Name PSGallery -ErrorAction SilentlyContinue
+          if (-not $galleryRepository) {
+            Register-PSResourceRepository -Name PSGallery -Uri https://www.powershellgallery.com/api/v2 -Trusted
+          }
+
       - name: Publish PowerShell Module
         if: startsWith(github.ref, 'refs/tags/')
         uses: natescherer/publish-powershell-action@v1
