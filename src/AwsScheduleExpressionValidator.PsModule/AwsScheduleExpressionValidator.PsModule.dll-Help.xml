@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<helpItems xmlns="http://msh" schema="maml">
+  <command:command
+    xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+    xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10"
+    xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+    xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Test-AwsScheduleExpressionFormat</command:name>
+      <command:verb>Test</command:verb>
+      <command:noun>AwsScheduleExpressionFormat</command:noun>
+      <maml:description>
+        <maml:para>
+          Tests the validity of an AWS schedule expression format.
+        </maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>
+        Provides a cmdlet for testing the validity of an AWS schedule expression format.
+      </maml:para>
+    </maml:description>
+    <command:parameters>
+      <command:parameter required="true" pipelineInput="false" variableLength="true" position="0">
+        <maml:name>Expression</maml:name>
+        <maml:description>
+          <maml:para>
+            The AWS schedule expression to validate.
+          </maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="true">String</command:parameterValue>
+        <dev:type>String</dev:type>
+        <dev:defaultvalue>null</dev:defaultvalue>
+      </command:parameter>
+    </command:parameters>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Test an expression format</maml:title>
+        <maml:Introduction>
+          <maml:paragraph>C:\PS&gt;</maml:paragraph>
+        </maml:Introduction>
+        <dev:code>Test-AwsScheduleExpressionFormat -Expression 'rate(5 minutes)'</dev:code>
+        <dev:remarks>
+          <maml:para>
+            Tests whether the string "rate(5 minutes)" is a valid AWS schedule expression format.
+          </maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>https://github.com/trossr32/aws-schedule-expression-validator</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command
+    xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+    xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10"
+    xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+    xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Test-AwsScheduleExpression</command:name>
+      <command:verb>Test</command:verb>
+      <command:noun>AwsScheduleExpression</command:noun>
+      <maml:description>
+        <maml:para>
+          Tests the validity of an AWS schedule expression and optional interval constraints.
+        </maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>
+        Provides a cmdlet for testing the validity of an AWS schedule expression, with optional minimum and maximum interval constraints.
+      </maml:para>
+    </maml:description>
+    <command:parameters>
+      <command:parameter required="true" pipelineInput="false" variableLength="true" position="0">
+        <maml:name>Expression</maml:name>
+        <maml:description>
+          <maml:para>
+            The AWS schedule expression to validate.
+          </maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="true">String</command:parameterValue>
+        <dev:type>String</dev:type>
+        <dev:defaultvalue>null</dev:defaultvalue>
+      </command:parameter>
+      <command:parameter required="false" pipelineInput="false" variableLength="true" position="named">
+        <maml:name>MinInterval</maml:name>
+        <maml:description>
+          <maml:para>
+            The minimum allowed interval between occurrences.
+          </maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="true">TimeSpan</command:parameterValue>
+        <dev:type>TimeSpan</dev:type>
+        <dev:defaultvalue>null</dev:defaultvalue>
+      </command:parameter>
+      <command:parameter required="false" pipelineInput="false" variableLength="true" position="named">
+        <maml:name>MaxInterval</maml:name>
+        <maml:description>
+          <maml:para>
+            The maximum allowed interval between occurrences.
+          </maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="true">TimeSpan</command:parameterValue>
+        <dev:type>TimeSpan</dev:type>
+        <dev:defaultvalue>null</dev:defaultvalue>
+      </command:parameter>
+    </command:parameters>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Test an expression with interval constraints</maml:title>
+        <maml:Introduction>
+          <maml:paragraph>C:\PS&gt;</maml:paragraph>
+        </maml:Introduction>
+        <dev:code>Test-AwsScheduleExpression -Expression 'rate(5 minutes)' -MinInterval '00:01:00' -MaxInterval '01:00:00'</dev:code>
+        <dev:remarks>
+          <maml:para>
+            Tests whether the expression is valid and falls between 1 minute and 1 hour.
+          </maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>https://github.com/trossr32/aws-schedule-expression-validator</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command
+    xmlns:maml="http://schemas.microsoft.com/maml/2004/10"
+    xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10"
+    xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"
+    xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-AwsScheduleExpressionOccurrence</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>AwsScheduleExpressionOccurrence</command:noun>
+      <maml:description>
+        <maml:para>
+          Gets upcoming occurrences for an AWS schedule expression.
+        </maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>
+        Provides a cmdlet for retrieving upcoming occurrences for a valid AWS schedule expression, optionally starting at a specific time.
+      </maml:para>
+    </maml:description>
+    <command:parameters>
+      <command:parameter required="true" pipelineInput="false" variableLength="true" position="0">
+        <maml:name>Expression</maml:name>
+        <maml:description>
+          <maml:para>
+            The AWS schedule expression to evaluate for occurrences.
+          </maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="true">String</command:parameterValue>
+        <dev:type>String</dev:type>
+        <dev:defaultvalue>null</dev:defaultvalue>
+      </command:parameter>
+      <command:parameter required="false" pipelineInput="false" variableLength="true" position="named">
+        <maml:name>Count</maml:name>
+        <maml:description>
+          <maml:para>
+            The number of upcoming occurrences to return.
+          </maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="true">Int32</command:parameterValue>
+        <dev:type>Int32</dev:type>
+        <dev:defaultvalue>5</dev:defaultvalue>
+      </command:parameter>
+      <command:parameter required="false" pipelineInput="false" variableLength="true" position="named">
+        <maml:name>Start</maml:name>
+        <maml:description>
+          <maml:para>
+            The start time for calculating occurrences.
+          </maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="true">DateTimeOffset</command:parameterValue>
+        <dev:type>DateTimeOffset</dev:type>
+        <dev:defaultvalue>null</dev:defaultvalue>
+      </command:parameter>
+    </command:parameters>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Get upcoming occurrences</maml:title>
+        <maml:Introduction>
+          <maml:paragraph>C:\PS&gt;</maml:paragraph>
+        </maml:Introduction>
+        <dev:code>Get-AwsScheduleExpressionOccurrence -Expression 'rate(5 minutes)' -Count 3 -Start '2024-01-01T00:00:00Z'</dev:code>
+        <dev:remarks>
+          <maml:para>
+            Returns the next three occurrences starting at January 1, 2024 UTC.
+          </maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>https://github.com/trossr32/aws-schedule-expression-validator</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+</helpItems>

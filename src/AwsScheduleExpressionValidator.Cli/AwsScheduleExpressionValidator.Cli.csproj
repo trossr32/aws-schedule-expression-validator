@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\AwsScheduleExpressionValidator\AwsScheduleExpressionValidator.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>aws-schedule-expression-validator</ToolCommandName>
+    <PackageId>AwsScheduleExpressionValidator.Tool</PackageId>
+    <Version>1.2.0</Version>
+    <Authors>Rob Green Engineering Ltd</Authors>
+    <Description>CLI for validating AWS EventBridge Scheduler expressions.</Description>
+    <PackageProjectUrl>https://github.com/trossr32/aws-schedule-expression-validator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/trossr32/aws-schedule-expression-validator</RepositoryUrl>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

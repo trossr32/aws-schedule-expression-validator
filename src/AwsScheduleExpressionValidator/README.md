@@ -127,6 +127,7 @@ public class ScheduleRequestValidator : AbstractValidator<ScheduleRequest>
         // Basic format validation
         RuleFor(x => x.Expression)
             .MustBeValidAwsSchedule();
+
         // Validate with a minimum interval of 5 minutes
         RuleFor(x => x.Expression)
             .MustBeValidAwsSchedule(TimeSpan.FromMinutes(5));

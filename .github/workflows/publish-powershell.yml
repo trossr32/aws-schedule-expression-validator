@@ -1,0 +1,39 @@
+name: Publish PowerShell Module
+on:
+  push:
+    tags: ['*']
+    paths:
+      - '.github/workflows/publish-powershell.yml'
+      - 'src/AwsScheduleExpressionValidator.PsModule/**'
+
+  workflow_call:
+
+  workflow_dispatch:
+
+jobs:
+  publish-powershell-gallery:
+    permissions:
+      contents: read
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 8.0.x
+
+      - name: dotnet build
+        run: dotnet build -c Release
+        working-directory: src/AwsScheduleExpressionValidator.PsModule
+
+      - name: Copy help XML
+        run: cp AwsScheduleExpressionValidator.PsModule.dll-Help.xml bin/Release/net8.0/
+        working-directory: src/AwsScheduleExpressionValidator.PsModule
+
+      - name: Publish PowerShell Module
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: natescherer/publish-powershell-action@v1
+        with:
+          token: ${{ secrets.GALLERY_API_KEY }}
+          target: gallery
+          path: src/AwsScheduleExpressionValidator.PsModule/bin/Release/net8.0

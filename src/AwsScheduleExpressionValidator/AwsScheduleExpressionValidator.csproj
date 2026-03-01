@@ -7,7 +7,7 @@
 		<LangVersion>latest</LangVersion>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<PackageId>AwsScheduleExpressionValidator</PackageId>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
 		<Authors>Rob Green Engineering Ltd</Authors>
 		<Description>A library for validating AWS EventBridge Scheduler CRON expressions with optional minimum timespan checks, fluent API and FluentValidation integration</Description>
 		<PackageTags>cron;aws;eventbridge;scheduler;validation</PackageTags>
@@ -38,12 +38,12 @@
 		</Content>
 	</ItemGroup>
 
-    <ItemGroup>
-        <None Include="Assets\nuget_128.png" Link="nuget_128.png">
-            <PackagePath></PackagePath>
-            <Pack>True</Pack>
-        </None>
-    </ItemGroup>
+	<ItemGroup>
+		<None Include="Assets\nuget_128.png" Link="nuget_128.png">
+			<PackagePath></PackagePath>
+			<Pack>True</Pack>
+		</None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Update="Assets\**\*">
@@ -67,11 +67,11 @@
 		<Title>AWS Schedule Expression Validator</Title>
 	</PropertyGroup>
 
-    <ItemGroup>
-        <None Update="nuget_128.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
+	<ItemGroup>
+		<None Update="nuget_128.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
 		<ItemGroup>
