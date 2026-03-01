@@ -33,14 +33,15 @@ jobs:
           $result = [regex]::Matches($projFile, $vsnPattern)
           $vsn = $result[0].Groups['version'].Value
           
-          # if not the main branch then use a valid semver pre-release format with branch name with special chars removed, lower cased 
-          # and truncated to 10 chars, and datetime, e.g. 'refs/heads/feature/YK-1234_a-branch' becomes 1.0.0-yk1234_abr.yyyyMMddHHmmss
-          if ("${{ github.ref }}" -ne "refs/heads/main") {
+          $refType = "${{ github.ref_type }}"
+          $branchName = "${{ github.head_ref || github.ref_name }}"
+
+          # Use a valid semver pre-release format for non-tag builds.
+          # Example: 1.0.0-yk1234abr.yyyyMMddHHmmss
+          if ($refType -ne "tag") {
             $now = [System.DateTime]::Now.ToString("yyyyMMddHHmmss")
 
-            $parts = "${{ github.ref }}".Split('/')
-
-            $branch = ($parts[$parts.Length - 1] -replace '[^a-zA-Z0-9]', '').ToLower()
+            $branch = ($branchName -replace '[^a-zA-Z0-9]', '').ToLower()
 
             if ($branch.Length -gt 10) {
               $branch = $branch.Substring(0, 10)
