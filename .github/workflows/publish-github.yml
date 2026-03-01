@@ -14,6 +14,11 @@ on:
   workflow_call:
 
   workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to run against (e.g. v1.2.0). Leave empty to use selected ref.
+        required: false
+        type: string
 
 jobs:
   pack-and-publish:
@@ -21,6 +26,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag != '' && format('refs/tags/{0}', github.event.inputs.tag) || github.ref }}
       
       - name: Build and publish package
         run: |
@@ -35,6 +42,12 @@ jobs:
           
           $refType = "${{ github.ref_type }}"
           $branchName = "${{ github.head_ref || github.ref_name }}"
+          $manualTag = "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || '' }}"
+
+          if (-not [string]::IsNullOrWhiteSpace($manualTag)) {
+            $refType = "tag"
+            $branchName = $manualTag
+          }
 
           # Use a valid semver pre-release format for non-tag builds.
           # Example: 1.0.0-yk1234abr.yyyyMMddHHmmss
