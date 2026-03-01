@@ -34,7 +34,6 @@
 		<Content Include="README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
 

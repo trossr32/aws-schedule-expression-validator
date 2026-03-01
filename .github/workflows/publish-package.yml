@@ -44,6 +44,7 @@ jobs:
           for package in artifacts/package/release/*.nupkg; do
             dotnet nuget push "$package" \
               --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+              --skip-duplicate \
               --source https://api.nuget.org/v3/index.json
           done
         working-directory: src/AwsScheduleExpressionValidator
