@@ -1,7 +1,7 @@
 {
-  "name": "x700",
-  "short_name": "x700",
-  "description": "x700 - A Progressive Web App",
+  "name": "AWS Schedule Expression Validator",
+  "short_name": "AWS SEV",
+  "description": "AWS Schedule Expression Validator is a web application that allows validation of AWS cron expressions and schedule configurations. It provides an interactive interface for testing and verifying the correctness of AWS schedules, ensuring that they meet the required syntax and functionality.",
   "start_url": "./",
   "display": "standalone",
   "theme_color": "#000000",
